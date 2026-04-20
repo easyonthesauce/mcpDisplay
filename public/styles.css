@@ -1,0 +1,392 @@
+:root {
+  --bg1: #0d1020;
+  --bg2: #151a38;
+  --bg3: #302269;
+  --txt: #f4f9ff;
+  --txt-soft: #d9e5ff;
+  --glass: rgba(255, 255, 255, 0.12);
+  --glass-border: rgba(255, 255, 255, 0.25);
+  --accent: #83e2ff;
+  --success: #9bf6b1;
+  --warning: #ffd97d;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  font-family: "Inter", sans-serif;
+  color: var(--txt);
+  background: radial-gradient(circle at 20% 10%, var(--bg3), var(--bg2), var(--bg1));
+}
+
+body[data-theme="sunrise"] {
+  --bg1: #1f1020;
+  --bg2: #4d2142;
+  --bg3: #d46349;
+  --accent: #ffd87f;
+}
+
+body[data-theme="ocean"] {
+  --bg1: #06141f;
+  --bg2: #0a3a5c;
+  --bg3: #007f92;
+  --accent: #7bf3ff;
+}
+
+body[data-theme="midnight"] {
+  --bg1: #050509;
+  --bg2: #0a0f1e;
+  --bg3: #3a3f75;
+  --accent: #9ca8ff;
+}
+
+body[data-theme="party"] {
+  --bg1: #2a0738;
+  --bg2: #61126b;
+  --bg3: #d13f72;
+  --accent: #ffe66d;
+}
+
+.background-orbs {
+  position: fixed;
+  inset: -20vh;
+  filter: blur(10px);
+  z-index: 0;
+}
+
+.orb {
+  position: absolute;
+  border-radius: 999px;
+  opacity: 0.38;
+  animation: orbit 18s ease-in-out infinite alternate;
+}
+
+.orb-a {
+  width: 40vmin;
+  height: 40vmin;
+  background: #7d8bff;
+  top: 20%;
+  left: 10%;
+}
+
+.orb-b {
+  width: 45vmin;
+  height: 45vmin;
+  background: #56ffd3;
+  top: 40%;
+  right: 8%;
+  animation-duration: 21s;
+}
+
+.orb-c {
+  width: 34vmin;
+  height: 34vmin;
+  background: #ffc67a;
+  bottom: 8%;
+  left: 35%;
+  animation-duration: 15s;
+}
+
+.app {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  height: 100%;
+  padding: 2.2rem;
+  gap: 1.5rem;
+  grid-template-rows: auto 1fr auto;
+}
+
+.glass {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.24);
+}
+
+.top-bar {
+  border-radius: 1.2rem;
+  padding: 1.2rem 1.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+#displayTitle {
+  margin: 0;
+  font-size: clamp(1.8rem, 2.8vw, 3rem);
+  line-height: 1.05;
+  letter-spacing: 0.02em;
+}
+
+#displaySubtitle {
+  margin: 0.35rem 0 0;
+  font-size: clamp(1rem, 1.5vw, 1.5rem);
+  color: var(--txt-soft);
+}
+
+.clock-wrap {
+  text-align: right;
+}
+
+.clock-time {
+  font-size: clamp(2rem, 4vw, 4.6rem);
+  font-weight: 900;
+  line-height: 1;
+}
+
+.clock-date {
+  margin-top: 0.35rem;
+  color: var(--txt-soft);
+  font-size: clamp(0.95rem, 1.2vw, 1.4rem);
+}
+
+.scene-shell {
+  min-height: 0;
+}
+
+.scene-card {
+  height: 100%;
+  border-radius: 1.4rem;
+  padding: 1.4rem;
+  display: grid;
+  gap: 1.2rem;
+  grid-template-rows: auto 1fr;
+}
+
+.scene-header h2 {
+  margin: 0;
+  font-family: "Baloo 2", cursive;
+  font-size: clamp(2.2rem, 4.2vw, 5rem);
+  line-height: 1;
+}
+
+.scene-header p {
+  margin: 0.4rem 0 0;
+  font-size: clamp(1.2rem, 1.8vw, 2rem);
+  color: var(--txt-soft);
+}
+
+.scene-grid {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  align-content: start;
+}
+
+.element-card {
+  border-radius: 1rem;
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  animation: popIn 600ms ease both;
+}
+
+.element-card h3 {
+  margin: 0;
+  font-size: clamp(1.1rem, 1.8vw, 2.2rem);
+}
+
+.element-card p {
+  margin: 0.6rem 0 0;
+  font-size: clamp(1rem, 1.6vw, 1.9rem);
+  line-height: 1.25;
+}
+
+.element-media {
+  overflow: hidden;
+  padding: 0;
+}
+
+.element-media img,
+.element-media video {
+  width: 100%;
+  height: 100%;
+  min-height: 22vh;
+  object-fit: cover;
+  border-radius: 1rem;
+  transform: scale(1.01);
+  animation: gentleZoom 10s ease-in-out infinite alternate;
+}
+
+.media-caption {
+  position: absolute;
+  left: 1rem;
+  right: 1rem;
+  bottom: 1rem;
+  padding: 0.6rem 0.8rem;
+  border-radius: 0.6rem;
+  background: rgba(0, 0, 0, 0.55);
+  font-size: clamp(0.9rem, 1.2vw, 1.4rem);
+}
+
+.element-media {
+  position: relative;
+}
+
+.ticker {
+  border-radius: 1.1rem;
+  padding: 0.75rem 1rem;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 1rem;
+}
+
+.ticker-label {
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  font-size: clamp(1rem, 1.4vw, 1.5rem);
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+.ticker-marquee {
+  overflow: hidden;
+}
+
+.ticker-track {
+  display: inline-flex;
+  gap: 2rem;
+  white-space: nowrap;
+  font-size: clamp(1rem, 1.4vw, 1.5rem);
+  animation: marquee 30s linear infinite;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  background: rgba(4, 7, 20, 0.72);
+  font-size: clamp(2rem, 5vw, 6rem);
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 320ms ease;
+}
+
+.overlay.visible {
+  opacity: 1;
+}
+
+.overlay-emoji {
+  font-size: 1.15em;
+  animation: bob 1s ease-in-out infinite alternate;
+}
+
+.transition-slide {
+  animation: sceneSlide 550ms cubic-bezier(0.19, 0.75, 0.39, 1) both;
+}
+
+.transition-fade {
+  animation: fadeIn 500ms ease both;
+}
+
+.transition-zoom {
+  animation: zoomIn 500ms ease both;
+}
+
+@media (max-width: 1200px) {
+  .scene-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .app {
+    padding: 1rem;
+  }
+}
+
+@keyframes orbit {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(2rem, -1.2rem, 0) scale(1.1);
+  }
+}
+
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes gentleZoom {
+  from {
+    transform: scale(1.02);
+  }
+  to {
+    transform: scale(1.08);
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes bob {
+  from {
+    transform: translateY(-4px);
+  }
+  to {
+    transform: translateY(6px);
+  }
+}
+
+@keyframes sceneSlide {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes zoomIn {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

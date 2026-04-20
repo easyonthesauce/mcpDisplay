@@ -1,0 +1,16 @@
+{
+  "name": "mcp-kiosk-display",
+  "version": "1.0.0",
+  "description": "MCP-powered family kiosk display server",
+  "type": "module",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node --watch server/index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.17.1",
+    "express": "^4.19.2",
+    "ws": "^8.18.0"
+  }
+}

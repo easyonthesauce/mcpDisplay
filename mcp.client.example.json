@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "family-kiosk-display": {
+      "command": "node",
+      "args": [
+        "server/index.js"
+      ],
+      "cwd": "c:/Users/Shavid/OneDrive/Desktop/mcpDisplay"
+    }
+  }
+}
