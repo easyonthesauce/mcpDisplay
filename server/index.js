@@ -4,6 +4,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { startMcpServer } from "./mcp.js";
 import { getState, nextScene, setSceneIndex } from "./state.js";
+import { handleMcpToolCall, getToolDefinitions } from "./http-mcp-handler.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -22,6 +23,39 @@ app.get("/health", (req, res) => {
 
 app.get("/api/state", (req, res) => {
   res.json(getState());
+});
+
+app.get("/mcp/tools", (req, res) => {
+  res.json({ tools: getToolDefinitions() });
+});
+
+app.post("/mcp/call", async (req, res) => {
+  const { tool, arguments: toolArgs = {} } = req.body;
+
+  if (!tool || typeof tool !== "string") {
+    return res.status(400).json({ ok: false, error: "Missing or invalid 'tool' parameter" });
+  }
+
+  const result = await handleMcpToolCall(tool, toolArgs, broadcastState);
+  res.json(result);
+});
+
+app.post("/mcp/stream", async (req, res) => {
+  res.setHeader("Content-Type", "text/event-stream");
+  res.setHeader("Cache-Control", "no-cache");
+  res.setHeader("Connection", "keep-alive");
+
+  const { tool, arguments: toolArgs = {} } = req.body;
+
+  if (!tool || typeof tool !== "string") {
+    res.write(`data: ${JSON.stringify({ ok: false, error: "Missing or invalid 'tool' parameter" })}\n\n`);
+    res.end();
+    return;
+  }
+
+  const result = await handleMcpToolCall(tool, toolArgs, broadcastState);
+  res.write(`data: ${JSON.stringify(result)}\n\n`);
+  res.end();
 });
 
 const server = app.listen(PORT, () => {

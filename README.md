@@ -12,21 +12,47 @@ A polished, animated kiosk display that can be controlled by an LLM through MCP 
 - Overlay announcements for urgent family updates
 - Auto-advancing playlist mode for unattended display rotation
 
-## MCP tools exposed
+## MCP integrations
 
-- `kiosk_get_status`
-- `kiosk_set_playlist`
-- `kiosk_show_scene`
-- `kiosk_next_scene`
-- `kiosk_previous_scene`
-- `kiosk_set_overlay`
-- `kiosk_set_theme`
-- `kiosk_reset_defaults`
-- `kiosk_show_calendar`
-- `kiosk_show_chores`
-- `kiosk_show_meal_plan`
-- `kiosk_show_school_run`
-- `kiosk_announce`
+The server supports **two MCP transports**:
+
+1. **Stdio (default)** — for LLM clients that use stdio-based MCP
+2. **HTTP streaming** — for tools like n8n, Zapier, or custom integrations
+
+### Stdio transport
+
+Standard MCP over stdin/stdout. Used by most LLM clients as a subprocess.
+
+### HTTP streaming transport
+
+call MCP tools from n8n or any HTTP client.
+
+- `GET /mcp/tools` — list all available tools
+- `POST /mcp/call` — invoke a tool (JSON response)
+- `POST /mcp/stream` — invoke a tool (Server-Sent Events response)
+
+#### Example: n8n HTTP POST to `/mcp/call`
+
+```json
+{
+  "tool": "kiosk_show_chores",
+  "arguments": {
+    "dueToday": ["Dishes", "Homework", "Vacuum living room"],
+    "done": ["Breakfast prep", "Make beds"],
+    "points": ["Jane: 12 pts", "Max: 8 pts"],
+    "theme": "party"
+  }
+}
+```
+
+Response:
+```json
+{
+  "ok": true,
+  "message": "Chore dashboard rendered",
+  "state": { /* full kiosk state */ }
+}
+```
 
 ## Run locally
 
